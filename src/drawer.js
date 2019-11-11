@@ -13,7 +13,6 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import ListSubheader from "@material-ui/core/ListSubheader";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -24,6 +23,9 @@ import SendIcon from "@material-ui/icons/Send";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import StarBorder from "@material-ui/icons/StarBorder";
+
+import { uiTheme } from "./themes.js";
+
 const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
@@ -90,23 +92,6 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export const uiTheme = createMuiTheme({
-  palette: {
-    primary: {
-      light: "#6d6d6d",
-      main: "#424242",
-      dark: "#1b1b1b",
-      contrastText: "#ffffff"
-    },
-    secondary: {
-      light: "#8bf6ff",
-      main: "#4fc3f7",
-      dark: "#0093c4",
-      contrastText: "#000000"
-    }
-  }
-});
-
 export default function MiniDrawer() {
   const classes = useStyles();
   const theme = createMuiTheme();
@@ -127,7 +112,6 @@ export default function MiniDrawer() {
 
   return (
     <MuiThemeProvider theme={uiTheme}>
-      {}
       <div className={classes.root}>
         <CssBaseline />
         <AppBar
@@ -149,9 +133,11 @@ export default function MiniDrawer() {
             >
               <MenuIcon />
             </IconButton>
+            {/*
             <Typography variant="h6" noWrap>
               Mini variant drawer
             </Typography>
+            */}
           </Toolbar>
         </AppBar>
         <Drawer
@@ -178,15 +164,30 @@ export default function MiniDrawer() {
             </IconButton>
           </div>
           <Divider />
-          <List
-            component="nav"
-            aria-labelledby="nested-list-subheader"
-            subheader={
-              <ListSubheader component="div" id="nested-list-subheader">
-                Nested List Items
-              </ListSubheader>
-            }
-          >
+          <List component="nav" aria-labelledby="nested-list-subheader">
+            <ListItem button onClick={handleClick}>
+              <ListItemIcon>
+                <InboxIcon />
+              </ListItemIcon>
+              <ListItemText primary="GP" />
+              {inOpen ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+            <Collapse in={inOpen} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                <ListItem button className={classes.nested}>
+                  <ListItemIcon>
+                    <StarBorder />
+                  </ListItemIcon>
+                  <ListItemText primary="scene1" />
+                </ListItem>
+                <ListItem button className={classes.nested}>
+                  <ListItemIcon>
+                    <StarBorder />
+                  </ListItemIcon>
+                  <ListItemText primary="scene2" />
+                </ListItem>
+              </List>
+            </Collapse>
             <ListItem button>
               <ListItemIcon>
                 <SendIcon />
